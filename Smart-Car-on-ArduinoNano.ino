@@ -32,15 +32,15 @@ void setInterval(auto function,int delay)
     }
 }
 
-void setSwitch(auto function1, auto function2, int delay)
+void setSwitch(auto function1, auto function2, int delay1, int delay2)
 {
     static unsigned long startTime = millis(); 
 
-    if(millis() - startTime < delay){
+    if(millis() - startTime < delay1){
         function1();
-    }else if(millis() - startTime >= delay && millis() - startTime < 2*delay){
+    }else if(millis() - startTime >= delay1 && millis() - startTime < delay1 + delay2){
         function2();
-    }else if(millis() - startTime >= 2*delay){
+    }else if(millis() - startTime >= delay1 + delay2){
         startTime = millis();
     }
 }
@@ -57,8 +57,7 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
 
-  setSwitch([]{digitalWrite(LED_BUILTIN, HIGH);},[]{digitalWrite(LED_BUILTIN, LOW);},1000);
+  setSwitch([]{digitalWrite(LED_BUILTIN, HIGH);},[]{digitalWrite(LED_BUILTIN, LOW);},1000, 2000);
 
- setSwitch([]{digitalWrite(LED_BUILTIN, HIGH);},[]{digitalWrite(LED_BUILTIN, LOW);},3000);
 
 }
