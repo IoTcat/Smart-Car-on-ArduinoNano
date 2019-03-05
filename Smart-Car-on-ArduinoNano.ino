@@ -54,28 +54,40 @@ void setSwitch(auto function1, auto function2, const int delay1, const int delay
     }
 }
 
-void slowWrite(int pin, int state, unsigned int delay)
+class slowWrite
 {
-    static int startTime = millis();
-    if(millis() - startTime >= delay){
-        
-    }
-    analogWrite(pin, (((millis() - startTime) % delay) / delay) * 255);
-}
-
-/*
-        slowWrite(int pin, int state, unsigned int delay){
-            static int startTime = millis();
-            if(millis() - startTime < delay){
-                analogWrite(pin, ((millis() - startTime) / delay) * 255);
-                Serial.println(((millis() - startTime) / delay) * 255);
+    public:
+        inline void set(int t_pin, unsigned int t_delay){
+            pin = t_pin;
+            delay = t_delay;
+        };
+        inline void high(){
+            startTime = millis();
+            state = 1;
+        };
+        inline void low(){
+            startTime = millis();
+            state = 0;
+        };
+        inline void run(){
+            if(state == 1 && millis() - startTime < delay){
+                analogWrite(pin, ((millis() - startTime) * 255 / delay));Serial.println(((millis() - startTime) * 255 / delay));
+            }else if(state == 0 && millis() - startTime < delay){
+                analogWrite(pin, 255-((millis() - startTime) * 255 / delay));Serial.println(255-((millis() - startTime) * 255 / delay));
             }else{
-                delete this;
+                state = -1;
             }
-        }
-*/
+        };
+
+    private:
+        unsigned long startTime;
+        int state;
+        int pin;
+        unsigned int delay;    
+};
 
 
+slowWrite m;
 
 ///////Test Version Only
 // the setup function runs once when you press reset or power the board
@@ -86,14 +98,18 @@ void setup() {
     motor_init();       //电机初始化
     pixels.begin();     //彩色灯珠初始化
     Serial.begin(115200);
+
+
 }
 
 // the loop function runs over and over again forever
 void loop() {
+    m.set(LED_BUILTIN, 2000);
+    m.run();
 
-  setTimeout([]{setInterval([]{digitalWrite(LED_BUILTIN, HIGH);}, 3000);},1000);
+  setTimeout([]{setInterval([]{m.high();}, 6000);},3000);
 
-  setInterval([]{digitalWrite(LED_BUILTIN, LOW);}, 3000);
+  setInterval([]{m.low();}, 6000);
 
 
 }
