@@ -14,7 +14,14 @@
 #define _OVO_H
 
 
-
+/**
+ * Like set Timeout in JS
+ *
+ * @Author yimian
+ * @param auto function (allow Lambda)
+ * @param int millisecond to dealy
+ * @return void
+ */
 void setTimeout(auto function,const int delay)
 {
     static bool on = 1;
@@ -28,6 +35,14 @@ void setTimeout(auto function,const int delay)
     }
 }
 
+/**
+ * Like set Interval in JS
+ *
+ * @Author yimian
+ * @param auto function (allow Lambda)
+ * @param int millisecond of interval
+ * @return void
+ */
 void setInterval(auto function, const int delay)
 {
     static unsigned long startTime = millis(); 
@@ -38,6 +53,17 @@ void setInterval(auto function, const int delay)
     }
 }
 
+
+/**
+ * Switch between function1 and function2 for delay1 and delay2
+ *
+ * @Author yimian
+ * @param auto function1 (allow Lambda)
+ * @param auto function2 (allow Lambda)
+ * @param int millisecond of interval
+ * @param int millisecond of interval
+ * @return void
+ */
 void setSwitch(auto function1, auto function2, const int delay1, const int delay2)
 {
     static unsigned long startTime = millis(); 
@@ -51,6 +77,14 @@ void setSwitch(auto function1, auto function2, const int delay1, const int delay
     }
 }
 
+
+/**
+ * Make direct voltage change to gradually change
+ *
+ * @author yimian
+ * @category ovo
+ * @package ovo
+ */
 class slowWrite
 {
     public:
